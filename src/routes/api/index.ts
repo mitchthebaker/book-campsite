@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import healthRouter from './health';
-import bookCampsiteRouter from './book-campsite';
+import bookCampsiteRouter from './bookCampsite';
 
 const apiRouter = Router();
 
@@ -15,8 +15,5 @@ apiRouter.get('/', (req: Request, res: Response) => {
     data: null,
   });
 });
-
-apiRouter.get('/health', healthRouter);
-apiRouter.get('/book-campsite', bookCampsiteRouter);
 
 export default apiRouter;

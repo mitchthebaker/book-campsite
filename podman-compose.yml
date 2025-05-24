@@ -10,7 +10,17 @@ services:
     container_name: campsite-api
     env_file:
       - .env
+    command: ["pnpm", "dev"]
     ports:
       - "3000:3000"
+    depends_on:
+      - redis
+  
+  worker:
+    build: .
+    container_name: campsite-worker
+    env_file:
+      - .env
+    command: ["pnpm", "worker:dev"]
     depends_on:
       - redis

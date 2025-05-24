@@ -5,6 +5,8 @@ const bookCampsiteRouter = Router();
 
 bookCampsiteRouter.post("/", async (req: Request, res: Response) => {
   try {
+    // require authentication middleware here if needed
+
     const job = await bookCampsiteQueue.add("book", req.body || {});
      
     res.status(202).json({
