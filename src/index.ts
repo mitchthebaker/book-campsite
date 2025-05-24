@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', apiRouter, apiLimiter);
+app.use('/api', apiLimiter, apiRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on http://${host}:${port}`);

@@ -7,7 +7,19 @@ bookCampsiteRouter.post("/", async (req: Request, res: Response) => {
   try {
     // require authentication middleware here if needed
 
-    const job = await bookCampsiteQueue.add("book", req.body || {});
+    const { url, auth } = req.body;
+
+    if (!url) {
+      return res.status(400).json({
+        status: "error",
+        statusCode: 400,
+        message: "Missing required field: url",
+        data: null,
+      });
+    }
+
+    const job = await bookCampsiteQueue.add("booking", { url, auth });
+    console.log(job);
      
     res.status(202).json({
       status: "accepted",
