@@ -5,13 +5,8 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod
-
-# Install playwright dependencies
-RUN pnpm exec playwright install --with-deps
+RUN pnpm install
 
 COPY . .
 
-RUN pnpm run build
-
-EXPOSE 3101
+EXPOSE 3000

@@ -13,7 +13,7 @@ services:
       - ./api/.env
     command: ["pnpm", "dev"]
     ports:
-      - "3000:3000"
+      - "3101:3101"
     depends_on:
       - redis
   
@@ -47,6 +47,18 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+  
+  client:
+   build:
+     context: ./client
+   container_name: campsite-client
+   env_file:
+     - ./client/.env
+   command: ["pnpm", "dev", "--host", "0.0.0.0", "--port", "3000"]
+   ports:
+     - "3000:3000"
+   depends_on:
+     - api
 
 volumes:
   keycloak_postgres_data:

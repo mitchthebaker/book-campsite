@@ -9,7 +9,7 @@ import { apiLimiter } from './middleware/rateLimiter';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3101;
 const host = process.env.HOST || "0.0.0.0";
 
 app.use(express.json());
