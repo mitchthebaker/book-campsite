@@ -1,8 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { expressjwt } from 'express-jwt';
+import JwksRsa from 'jwks-rsa';
 
-import apiRouter from '~/routes/api';
-import { apiLimiter } from '~/middleware/rateLimiter';
+import apiRouter from './routes/api';
+import { apiLimiter } from './middleware/rateLimiter';
 
 dotenv.config();
 
@@ -20,7 +22,22 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', apiLimiter, apiRouter);
+app.use(
+  '/api',
+  expressjwt({
+    secret: JwksRsa.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: process.env.KEYCLOAK_JWKS_URI!,
+    }),
+    audience: process.env.KEYCLOAK_CLIENT_ID,
+    issuer: process.env.KEYCLOAK_ISSUER,
+    algorithms: ['RS256'],
+  }),
+  apiLimiter, 
+  apiRouter
+);
 
 app.listen(port, () => {
   console.log(`Server is running on http://${host}:${port}`);

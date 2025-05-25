@@ -6,10 +6,11 @@ services:
       - "6379:6379"
 
   api:
-    build: .
+    build:
+      context: ./api
     container_name: campsite-api
     env_file:
-      - .env
+      - ./api/.env
     command: ["pnpm", "dev"]
     ports:
       - "3000:3000"
@@ -17,10 +18,35 @@ services:
       - redis
   
   worker:
-    build: .
+    build:
+      context: ./api
     container_name: campsite-worker
     env_file:
-      - .env
+      - ./api/.env
     command: ["pnpm", "worker:dev"]
     depends_on:
       - redis
+
+  postgres:
+    image: postgres:17
+    container_name: keycloak-postgres
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    container_name: keycloak
+    command: start-dev
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  keycloak_postgres_data:
