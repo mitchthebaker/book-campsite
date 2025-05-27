@@ -47,18 +47,23 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
-  
+
   client:
-   build:
-     context: ./client
-   container_name: campsite-client
-   env_file:
-     - ./client/.env
-   command: ["pnpm", "dev", "--host", "0.0.0.0", "--port", "3000"]
-   ports:
-     - "3000:3000"
-   depends_on:
-     - api
+    build:
+      context: ./client
+    container_name: campsite-client
+    env_file:
+      - ./client/.env
+    command: ["pnpm", "dev", "--host", "0.0.0.0", "--port", "3000"]
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    volumes:
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+      - ./client/vite.config.js:/app/vite.config.js
+      - ./client/tsconfig.json:/app/tsconfig.json
 
 volumes:
   keycloak_postgres_data:

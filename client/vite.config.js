@@ -12,9 +12,16 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
   },
+  server: {
+    watch: {
+      usePolling: true,
+    },
+    host: process.env.HOST || "0.0.0.0",
+    port: process.env.PORT || 3000,
+  },
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
+      '~': resolve(__dirname, './src'),
     },
   }
 });
