@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { expressjwt } from 'express-jwt';
 import JwksRsa from 'jwks-rsa';
 
-import apiRouter from './routes/api';
+import apiRouter from './routes/v1';
 import { apiLimiter } from './middleware/rateLimiter';
 
 dotenv.config();
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use(
-  '/api',
+  '/v1',
   expressjwt({
     secret: JwksRsa.expressJwtSecret({
       cache: true,
