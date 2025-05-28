@@ -2,8 +2,6 @@ services:
   redis:
     image: redis:8
     container_name: redis
-    ports:
-      - "6379:6379"
 
   api:
     build:
@@ -12,8 +10,6 @@ services:
     env_file:
       - ./api/.env
     command: ["pnpm", "dev"]
-    ports:
-      - "3101:3101"
     depends_on:
       - redis
   
@@ -32,8 +28,6 @@ services:
     container_name: keycloak-postgres
     env_file:
       - .env
-    ports:
-      - "5432:5432"
     volumes:
       - keycloak_postgres_data:/var/lib/postgresql/data
 
@@ -43,10 +37,19 @@ services:
     command: start-dev
     env_file:
       - .env
-    ports:
-      - "8080:8080"
     depends_on:
       - postgres
+  
+  nginx:
+    image: nginx:1.27
+    ports:
+      - "8081:80"
+      #- "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+      - keycloak
 
   client:
     build:
@@ -55,15 +58,13 @@ services:
     env_file:
       - ./client/.env
     command: ["pnpm", "dev", "--host", "0.0.0.0", "--port", "3000"]
-    ports:
-      - "3000:3000"
-    depends_on:
-      - api
     volumes:
       - ./client/src:/app/src
       - ./client/public:/app/public
       - ./client/vite.config.js:/app/vite.config.js
       - ./client/tsconfig.json:/app/tsconfig.json
+    depends_on:
+      - api
 
 volumes:
   keycloak_postgres_data:
