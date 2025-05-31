@@ -18,6 +18,9 @@ export default defineConfig({
     },
     host: process.env.HOST || "0.0.0.0",
     port: process.env.PORT || 3000,
+    allowedHosts: [
+      "campsite-client"
+    ],
   },
   resolve: {
     alias: {

@@ -3,14 +3,17 @@ import dotenv from 'dotenv';
 import { expressjwt } from 'express-jwt';
 import JwksRsa from 'jwks-rsa';
 
-import apiRouter from './routes/v1';
+import apiRouter from './routes/api';
 import { apiLimiter } from './middleware/rateLimiter';
 
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
+
 const port = process.env.PORT || 3101;
 const host = process.env.HOST || "0.0.0.0";
+const test = "new";
 
 app.use(express.json());
 
@@ -23,7 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use(
-  '/v1',
+  '/api',
   expressjwt({
     secret: JwksRsa.expressJwtSecret({
       cache: true,
@@ -34,7 +37,7 @@ app.use(
     audience: process.env.KEYCLOAK_CLIENT_ID,
     issuer: process.env.KEYCLOAK_ISSUER,
     algorithms: ['RS256'],
-  }),
+  }).unless({ path: ['/api/v1/health'] }),
   apiLimiter, 
   apiRouter
 );
