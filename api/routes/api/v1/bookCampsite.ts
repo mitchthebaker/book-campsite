@@ -30,7 +30,6 @@ bookCampsiteRouter.post("/", async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       status: "error",
-      statusCode: 500,
       message: "Failed to enqueue booking job",
       error: error instanceof Error ? error.message : String(error),
     });

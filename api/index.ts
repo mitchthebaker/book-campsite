@@ -13,7 +13,6 @@ app.set("trust proxy", 1);
 
 const port = process.env.PORT || 3101;
 const host = process.env.HOST || "0.0.0.0";
-const test = "new";
 
 app.use(express.json());
 
@@ -37,7 +36,12 @@ app.use(
     audience: process.env.KEYCLOAK_CLIENT_ID,
     issuer: process.env.KEYCLOAK_ISSUER,
     algorithms: ['RS256'],
-  }).unless({ path: ['/api/v1/health'] }),
+  }).unless({ 
+    path: [
+      "/api/v1/health",
+      "/api/v1/login",
+    ] 
+  }),
   apiLimiter, 
   apiRouter
 );
