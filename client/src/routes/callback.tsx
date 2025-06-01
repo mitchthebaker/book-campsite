@@ -2,14 +2,16 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { handleCallback } from '~/oidc/auth';
 
 export const Route = createFileRoute('/callback')({
-  loader: async () => {
+  beforeLoad: async () => {
     try {
-      // Handle the OIDC callback
       await handleCallback();
       return redirect({ to: "/dashboard" });
     }
-    catch (error) {
-      throw redirect ({ to: "/" });
+    catch {
+      throw redirect ({ 
+        to: "/",
+        search: { error: "oidc_callback_failed" },
+      });
     }
   },
   component: Callback,

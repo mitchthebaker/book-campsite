@@ -6,7 +6,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { FormInput } from "./FormInput";
 import { useLogin } from "~/shared/hooks/useLogin";
-import { login } from "~/oidc/auth";
+import { useAuth } from "~/providers/AuthProvider";
 
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "~/components/ui/button";
@@ -19,6 +19,7 @@ const loginValidationSchema = z.object({
 type LoginFormValues = z.infer<typeof loginValidationSchema>;
 
 export default function LoginForm() {
+  const { login } = useAuth();
   const loginMutation = useLogin();
 
   const form = useForm<LoginFormValues>({
