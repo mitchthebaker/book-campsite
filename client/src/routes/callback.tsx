@@ -9,7 +9,6 @@ export const Route = createFileRoute('/callback')({
     } catch {
       throw redirect({
         to: '/',
-        search: { error: 'oidc_callback_failed' },
       })
     }
   },

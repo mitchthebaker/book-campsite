@@ -1,6 +1,6 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response } from 'express'
 
-const healthRouter = Router();
+const healthRouter = Router()
 
 healthRouter.get('/', (req: Request, res: Response) => {
   res.status(200).json({
@@ -8,7 +8,7 @@ healthRouter.get('/', (req: Request, res: Response) => {
     statusCode: 200,
     message: 'api/v1 is healthy',
     data: { status: 'ok' },
-  });
-});
+  })
+})
 
-export default healthRouter;
+export default healthRouter
