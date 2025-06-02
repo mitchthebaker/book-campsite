@@ -5,7 +5,7 @@ import { buttonVariants } from '~/components/ui/button'
 import { useAuth } from '~/providers/AuthProvider'
 
 export default function Header() {
-  const { login, logout } = useAuth();
+  const { login, logout } = useAuth()
 
   return (
     <header className="p-2 flex gap-2 bg-white text-black justify-between">
@@ -19,14 +19,20 @@ export default function Header() {
         </div>
         <button
           type="button"
-          className={cn(buttonVariants({ variant: "outline" }), "flex gap-2 text-foreground")}
+          className={cn(
+            buttonVariants({ variant: 'outline' }),
+            'flex gap-2 text-foreground',
+          )}
           onClick={login}
         >
           Login
         </button>
         <button
           type="button"
-          className={cn(buttonVariants({ variant: "ghost" }), "flex gap-2 text-foreground")}
+          className={cn(
+            buttonVariants({ variant: 'ghost' }),
+            'flex gap-2 text-foreground',
+          )}
           onClick={logout}
         >
           Logout

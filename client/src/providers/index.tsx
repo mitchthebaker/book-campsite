@@ -1,15 +1,10 @@
-
-import React from "react";
-import { AuthProvider } from "./AuthProvider";
+import React from 'react'
+import { AuthProvider } from './AuthProvider'
 
 type ProvidersProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 export function Providers({ children }: ProvidersProps) {
-  return (
-    <AuthProvider>
-      {children}  
-    </AuthProvider>
-  );
+  return <AuthProvider>{children}</AuthProvider>
 }

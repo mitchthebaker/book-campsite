@@ -4,13 +4,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "~/components/ui/form";
+} from '~/components/ui/form'
 
 export type FormInputProps = {
-  label?: string;
-  description?: string;
-  children: React.ReactNode;
-};
+  label?: string
+  description?: string
+  children: React.ReactNode
+}
 
 export const FormInput = ({ label, description, children }: FormInputProps) => (
   <FormItem>
@@ -20,4 +20,4 @@ export const FormInput = ({ label, description, children }: FormInputProps) => (
 
     <FormMessage />
   </FormItem>
-);
+)

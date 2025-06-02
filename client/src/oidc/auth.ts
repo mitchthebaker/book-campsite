@@ -1,8 +1,8 @@
-import { userManager } from "./oidcClient";
+import { userManager } from './oidcClient'
 
 export const handleCallback = async () => {
-  const user = await userManager.signinRedirectCallback();
-  return user;
-};
+  const user = await userManager.signinRedirectCallback()
+  return user
+}
 
-export const getUser = () => userManager.getUser();
+export const getUser = () => userManager.getUser()
