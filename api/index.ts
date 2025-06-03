@@ -4,7 +4,7 @@ import { expressjwt } from 'express-jwt'
 import JwksRsa from 'jwks-rsa'
 
 import apiRouter from './routes/api'
-import { apiLimiter } from './middleware/rateLimiter'
+import { apiLimiter, jwtErrorHandler } from './middleware'
 
 dotenv.config()
 
@@ -42,6 +42,8 @@ app.use(
   apiLimiter,
   apiRouter,
 )
+
+app.use(jwtErrorHandler)
 
 app.listen(port, () => {
   console.log(`Server is running on http://${host}:${port}`)

@@ -2,6 +2,9 @@ services:
   redis:
     image: redis:8
     container_name: redis
+    volumes:
+      - redis-data:/data
+    command: ["redis-server", "--appendonly", "yes"]
 
   api:
     build:
@@ -71,3 +74,4 @@ services:
 
 volumes:
   keycloak_postgres_data:
+  redis-data:
