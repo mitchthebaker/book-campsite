@@ -2,6 +2,8 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { expressjwt } from 'express-jwt'
 import JwksRsa from 'jwks-rsa'
+import http from 'http'
+import { Server as webSocket } from 'socket.io'
 
 import apiRouter from './routes/api'
 import { apiLimiter, jwtErrorHandler } from './middleware'
@@ -9,7 +11,27 @@ import { apiLimiter, jwtErrorHandler } from './middleware'
 dotenv.config()
 
 const app = express()
+const server = http.createServer(app)
+const io = new webSocket(server, {
+  cors: {
+    origin: [
+      "http://localhost:8081",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+})
+
 app.set('trust proxy', 1)
+app.set('io', io)
+
+io.on('connection', (socket) => {
+  const userId = socket.handshake.auth.userId
+  if (userId) {
+    socket.join(userId)
+    console.log(`Socket ${socket.id} joined room ${userId}`)
+  }
+})
 
 const port = process.env.PORT || 3101
 const host = process.env.HOST || '0.0.0.0'
@@ -45,6 +67,6 @@ app.use(
 
 app.use(jwtErrorHandler)
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on http://${host}:${port}`)
 })

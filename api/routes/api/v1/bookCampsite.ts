@@ -43,6 +43,7 @@ bookCampsiteRouter.get('/', async (req: Request, res: Response) => {
 bookCampsiteRouter.post('/', async (req: Request, res: Response) => {
   try {
     const { url, auth } = req.body
+    const userId = req.auth?.sub
 
     if (!url) {
       return res.status(400).json({
@@ -55,6 +56,16 @@ bookCampsiteRouter.post('/', async (req: Request, res: Response) => {
 
     const job = await bookCampsiteQueue.add('booking', { url, auth })
     console.log(job)
+
+    const io = req.app.get('io')
+    if (userId) {
+      io.to(userId).emit('booking:created', {
+        jobId: job.id,
+        url, 
+        auth,
+        userId,
+      })
+    }
 
     res.status(202).json({
       status: 'accepted',
